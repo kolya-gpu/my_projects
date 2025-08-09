@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<title>Админка - управление продуктами</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+
+<h1>Управление продуктами</h1>
+
+<a href="{{ url_for('add_product') }}" class="btn">Добавить новый продукт</a>
+
+<table class="products-table">
+<tr><th>ID</th><th>Название</th><th>Описание</th><th>Цена</th><th>Действия</th></tr>
+
+{% for product in products %}
+<tr>
+<td>{{ product[0] }}</td>
+<td>{{ product[1] }}</td>
+<td>{{ product[2] }}</td>
+<td>{{ product[3] }} руб.</td>
+<td>
+<a href="{{ url_for('edit_product', product_id=product[0]) }}">Редактировать</a> | 
+<a href="{{ url_for('delete_product', product_id=product[0]) }}" onclick="return confirm('Удалить этот продукт?');">Удалить</a></td></tr>
+{% endfor %}
+
+</table>
+
+<br/>
+<a href="{{ url_for('index') }}">На главную страницу</a>
+
+<!-- Выйти из админки -->
+<br/><br/>
+<a href="{{ url_for('logout') }}">Выйти из системы</a>
+
+</body></html>

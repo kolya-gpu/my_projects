@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<title>Вход в систему</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+<h1>Войти в систему</h1>
+
+<form method="post" action="{{ url_for('login') }}">
+<label for="username">Имя пользователя:</label><br/>
+<input type="text" id="username" name="username" required /><br/><br/>
+
+<label for="password">Пароль:</label><br/>
+<input type="password" id="password" name="password" required /><br/><br/>
+
+<button type="submit">Войти</button>
+</form>
+
+<a href="{{ url_for('index') }}">На главную страницу</a>
+
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class="flashes">
+      {% for message in messages %}
+      <li>{{ message }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+
+</body>
+</html>

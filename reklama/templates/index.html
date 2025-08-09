@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<title>Рекламно-информационный сайт</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+<header>
+<h1>Наши продукты</h1>
+{% if session.get('user_id') %}
+<div class="auth-links">
+<a href="{{ url_for('admin_panel') }}">Админка</a> | 
+<a href="{{ url_for('logout') }}">Выйти</a>
+</div>
+{% else %}
+<div class="auth-links">
+<a href="{{ url_for('login') }}">Войти</a>
+</div>
+{% endif %}
+</header>
+
+<section class="products">
+{% for product in products %}
+<div class="product-card">
+<h2>{{ product[1] }}</h2>
+<p>{{ product[2] }}</p>
+<p class="price">Цена: {{ product[3] }} руб.</p>
+{% if session.get('user_id') %}
+<div class="admin-actions">
+<a href="{{ url_for('edit_product', product_id=product[0]) }}">Редактировать</a> | 
+<a href="{{ url_for('delete_product', product_id=product[0]) }}" onclick="return confirm('Удалить этот продукт?');">Удалить</a>
+</div>
+{% endif %}
+</div>
+{% else %}
+<p>Нет доступных продуктов.</p>
+{% endfor %}
+</section>
+</body>
+</html>

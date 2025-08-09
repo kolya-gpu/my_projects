@@ -1,0 +1,106 @@
+body {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    margin: 20px;
+    background-color: #f0f2f5;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* Заголовок и шапка */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    border-radius: 8px;
+    margin-bottom: 30px;
+}
+
+/* Заголовок */
+h1 {
+    font-size: 2rem;
+    color: #222;
+    margin: 0;
+}
+
+/* Кнопки */
+.btn {
+    padding: 10px 16px;
+    background-color: #007BFF;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: 600;
+    transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
+}
+
+.btn:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+/* Блок продуктов */
+.products {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+/* Карточка продукта */
+.product-card {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    width: calc(33% - 20px);
+    box-shadow:
+        rgba(0, 0, 0, 0.05) 0px 4px 8px,
+        rgba(0, 0, 0, 0.03) 0px 2px 4px;
+        transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow:
+        rgba(0, 0, 0, 0.1) 0px 8px 16px,
+        rgba(0, 0, 0, 0.05) 0px -4px inset; 
+}
+
+/* Заголовки внутри карточек */
+.product-card h2 {
+    margin-top: 0;
+    font-size: 1.5rem;
+    color: #222; 
+}
+
+/* Цена товара */
+.price {
+    display: inline-block;
+    margin-top: 10px; 
+    font-weight: bold; 
+    font-size: 1.2rem; 
+    color:#28a745; /* зеленый цвет для цены */
+}
+
+/* Оформление текста внутри карточки */
+.product-card p {
+   margin-top :10px ;
+   font-size :1rem ;
+   color:#555 ;
+}
+
+/* Адаптивность для мобильных устройств */
+@media(max-width:768px){
+   .product-card{
+       width : calc(50% -10px );
+   }
+}
+
+@media(max-width : 480px)
+{
+   .product-card{
+       width :100% ;
+   }
+}
