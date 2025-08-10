@@ -1,0 +1,261 @@
+import pandas as pd
+import sqlite3
+import folium
+import os
+import argparse
+import matplotlib.pyplot as plt
+
+DEFAULT_CSV_FILE = "geodata.csv"
+DEFAULT_DB_FILE = "geolocations.db"
+OUTPUT_MAP = "map.html"
+OUTPUT_PLOT = "geolocation_plot.png"
+
+csv_content = """id,name,latitude,longitude,timestamp
+1,Location1,55.424975,37.578936,2025-04-22 12:00:00
+2,Location2,55.817062, 37.383687,2025-04-28 22:00:00
+3,Location3,55.457021, 37.598932,2025-04-28 22:00:00
+4,Vologda,59.223058, 39.889616,2004-01-26 06:15:00
+5,St. Petersburg,59.947343, 30.304550,2025-04-28 22:00:00
+6,N. Novgorod,56.330062, 43.998288,2025-04-28 22:00:00
+7,Kazan,55.800484, 49.105920,2025-04-28 22:00:00
+8,Location4,55.826270, 37.637526,2025-04-28 22:00:00
+9,Location5,55.715765, 37.553634,2025-04-28 22:00:00
+10,Location6,55.791170, 37.559590,2025-04-28 22:00:00
+11,Kaliningrad,54.712899, 20.496575,2025-04-28 22:00:00
+12,Location7,55.775551, 37.658467,2025-04-28 22:00:00
+13,Location8,55.761132, 37.606334,2025-04-28 22:00:00
+14,Location9,55.457021, 37.598932,2022-11-22 10:00:00
+15,Location10,55.397756, 37.564221,2025-04-25 16:00:00
+16,Location11,55.421855, 37.569188,2025-03-03 17:00:00
+17,Location12,55.446694, 37.545452,2024-12-22 16:00:00
+18,Location13,55.329042, 37.483137,2024-12-22 16:00:00
+19,Location14,55.346994, 37.395084,2013-10-10 20:00:00
+20,Russia,54.712899, 20.496575,2025-04-28 22:00:00
+21,IqnixTech,55.423306, 37.579285,2022-03-24 15:00:00
+22,Podolsk Cadets Square,55.423252, 37.518292, 2022-03-24 15:00:00
+23,Yaroslavl',57.626559, 39.893813, 2025-04-28 22:00:00
+24,Kostroma,57.767918, 40.926894, 2025-04-28 22:00:00
+25,Tver',56.858745, 35.917421, 2025-04-28 22:00:00
+26,Smolensk,54.778263, 32.051054, 2025-04-28 22:00:00
+27,Bryansk,53.243397, 34.360934, 2025-04-28 22:00:00
+28,Vladimir,56.130789, 40.404232, 2025-04-28 22:00:00
+29,Arkhangel'sk,64.546907, 40.497798, 2025-04-28 22:00:00
+30,Volgograd,48.706584, 44.493640, 2025-04-28 22:00:00
+31,Sochi,43.593763, 39.705235, 2025-04-28 22:00:00
+32,Pyatigorsk,44.042100, 43.065374,2025-04-28 22:00:00
+33,Taganrog,47.211333, 38.931935,2025-04-28 22:00:00
+34,Serpukhov,54.914743, 37.412855,2025-06-26 09:00:00
+35,Minsk,53.908358, 27.552593,2025-06-26 09:00:00
+36,Petrozavodsk,61.793016, 34.333415,2025-06-26 09:00:00
+37,Murmansk,68.977104, 33.056507,2025-06-26 09:00:00
+38,Rogachevo Airport, 71.611780, 52.466269,2025-06-26 09:00:00
+39,White lip,71.536107, 52.343941,2025-06-26 09:00:00
+40,Vorkuta,67.503124, 64.043542,2025-06-26 09:00:00
+41,Kostomuksha,64.589504, 30.579746,2025-06-26 09:00:00
+42,Mount Elbrus,43.353264, 42.435176,2025-06-26 09:00:00
+43,Mogilev,53.898607, 30.321062,2025-06-26 09:00:00
+44,Brest,52.099228, 23.683341,2025-06-26 09:00:00
+45,Vitebsk,55.184919, 30.199976,2025-06-26 09:00:00
+46,Gomel',52.430170, 31.003547,2025-06-26 09:00:00
+47,Lida,53.892105, 25.301492,2025-06-26 09:00:00
+48,Grodno,53.678613, 23.829195,2025-06-26 09:00:00
+49,Nicosia,35.180810, 33.309687,2017-06-18 09:00:00
+50,Voronezh,51.673499, 39.165851,2025-06-26 09:00:00
+51,Perm',58.010005, 56.205969,2025-06-26 09:00:00
+52,Ekaterinburg,56.846331, 60.565068,2025-06-26 09:00:00
+53,Chelyabinsk,55.206957, 61.335616,2025-06-26 09:00:00
+54,Penza,53.207064, 44.977984,2025-06-26 09:00:00
+55,Ishim,56.109267, 69.448386,2025-06-26 09:00:00
+56,New Urengoi,66.097072, 76.636497,2025-06-26 09:00:00
+57,Salehard,66.530350, 66.612494,2025-06-26 09:00:00
+58,Lisbon,38.707890, -9.136594,2025-06-26 09:00:00
+59,Madrid,40.425930, -3.731654,2025-06-26 09:00:00
+60,Paris,48.881132, 2.311644,2025-06-26 09:00:00
+61,Zurich,47.407862, 8.520059,2025-06-26 09:00:00
+62,Rome,41.914719, 12.482877,2025-06-26 09:00:00
+63,Zagreb,45.822709, 15.972358,2025-06-26 09:00:00
+64,Belgrad,44.828813, 20.441536,2025-06-26 09:00:00
+65,Saraevo,43.865163, 18.416096,2025-06-26 09:00:00
+66,Podgorica,42.446889, 19.252691,2025-06-26 09:00:00
+67,Skopje,42.005096, 21.410225,2025-06-26 09:00:00
+68,Athens,37.976831, 23.721869,2025-06-26 09:00:00
+69,Valletta,35.909522, 14.497309,2025-06-26 09:00:00
+70,Sofia,42.707223, 23.303571,2025-06-26 09:00:00
+71,Ankara,39.936230, 32.836350,2025-06-26 09:00:00
+72,Kiyv,50.452781, 30.491683,2025-06-26 09:00:00
+73,Chisinau,47.047938, 28.818493,2025-06-26 09:00:00
+74,Tiraspol',46.840622, 29.605553,2025-06-26 09:00:00
+75,Vienna,48.216069, 16.346624,2025-06-26 09:00:00
+76,Berlin,52.541051, 13.363503,2025-06-26 09:00:00
+77,London,51.515809, -0.143102,2025-06-26 09:00:00
+78,Dublin,53.345623, -6.263454,2025-06-26 09:00:00
+79,Belfast,54.604409, -5.933219,2025-06-26 09:00:00
+80,Edinburgh,55.961359, -3.203278,2025-06-26 09:00:00
+81,Cardiff,51.488329, -3.181262,2025-06-26 09:00:00
+82,Brussels,50.872572, 4.337084,2025-06-26 09:00:00
+83,Bern,46.957572, 7.419276,2025-06-26 09:00:00
+84,Prague,50.085905, 14.420254,2025-06-26 09:00:00
+85,Bratislava,48.149815, 17.106164,2025-06-26 09:00:00
+86,Ljubljana,46.056947, 14.491805,2025-06-26 09:00:00
+87,Yerevan,40.189968, 44.504648,2025-06-26 09:00:00
+88,Baku,40.375437, 49.832436,2025-06-26 09:00:00
+89,Tbilisi,41.708837, 44.790851,2025-06-26 09:00:00
+90,Budapest,47.504919, 19.032534,2025-06-26 09:00:00
+91,Bucharest,47.504919, 19.032534,2025-06-26 09:00:00
+92,Warsaw,52.244743, 20.980920,2025-06-26 09:00:00
+93,Copenhagen,55.679387, 12.576443,2025-06-26 09:00:00
+94,Stockholm,59.334317, 18.063845,2025-06-26 09:00:00
+95,Helsinki,60.170228, 24.949242,2025-06-26 09:00:00
+96,Oslo,59.916958, 10.727128,2025-06-26 09:00:00
+97,Tallin,59.446613, 24.734589,2025-06-26 09:00:00
+98,Riga,56.948737, 24.096135,2025-06-26 09:00:00
+99,Vilnius,54.693775, 25.262965,2025-06-26 09:00:00
+100,Tirana,41.328274, 19.803082,2025-06-26 09:00:00
+101,Las Palmas,28.146240, -15.477006,2025-06-26 09:00:00
+102,Capetown,-33.850570, 18.361057,2025-06-26 09:00:00
+103,Cape Agulhas,-34.828719, 20.002542,2025-06-26 09:00:00
+104,Antananarivo,-18.903319, 47.487769,2025-06-26 09:00:00
+105,Luanda,-8.786183, 13.165362,2025-06-26 09:00:00
+106,Gaborone,-24.652652, 25.906923,2025-06-26 09:00:00
+107,Saint Helena,-15.987508, -5.746086,2025-06-26 09:00:00
+108,Maseru,-29.316488, 27.493672,2025-06-26 09:00:00
+109,Moroni,-11.694591, 43.255062,2025-06-26 09:00:00
+110,Maputo,-25.969286, 32.573175,2025-06-26 09:00:00
+111,Windhoek,-22.567379, 17.087409,2025-06-26 09:00:00
+112,Volchansky municipal district,60.000000, 60.000000,2025-06-26 09:00:00
+113,Taldyapan rural district,50.000000, 50.000000,2025-06-26 09:00:00
+114,Novokalitvenskoye rural settlement,50.000000, 40.000000,2025-06-26 09:00:00
+115,Northeastern Province Kenya,0.000000, 40.000000,2025-06-26 09:00:00
+116,Kikorongo Uganda,0.000000, 30.000000,2025-06-26 09:00:00
+117,Atlantic Ocean,0.000000, 0.000000,2025-06-26 09:00:00
+118,Estuariy Gabon,0.000000, 10.000000,2025-06-26 09:00:00
+119,The English Channel,50.000000, 0.000000,2025-06-26 09:00:00
+120,North Sea,55.000000, 0.000000,2025-06-26 09:00:00"""
+
+def ensure_csv_exists(csv_path):
+    if not os.path.exists(csv_path):
+        with open(csv_path, "w") as f:
+            f.write(csv_content)
+        print(f"{csv_path} создан автоматически.")
+
+def load_data(csv_path):
+    return pd.read_csv(csv_path)
+
+def save_to_db(df, db_path):
+    conn = sqlite3.connect(db_path)
+    df.to_sql('geolocations', conn, if_exists='replace', index=False)
+    conn.close()
+
+def query_db(db_path, query):
+    conn = sqlite3.connect(db_path)
+    result = pd.read_sql_query(query, conn)
+    conn.close()
+    return result
+
+def create_map(df, output_html=OUTPUT_MAP):
+    if df.empty:
+        print("Нет данных для отображения карты.")
+        return
+    
+    avg_lat = df['latitude'].mean()
+    avg_lon = df['longitude'].mean()
+    
+    geo_map = folium.Map(location=[avg_lat, avg_lon], zoom_start=6)
+    
+    for _, row in df.iterrows():
+        folium.Marker(
+            location=[row['latitude'], row['longitude']],
+            popup=row.get('name', 'Location')
+        ).add_to(geo_map)
+    
+    geo_map.save(output_html)
+    print(f"Карта сохранена в {output_html}")
+
+def create_time_distribution_plot(df, output_image=OUTPUT_PLOT):
+    if df.empty:
+        print("Нет данных для построения графика.")
+        return
+
+    df['timestamp'] = pd.to_datetime(df['timestamp'])
+
+    df['date'] = df['timestamp'].dt.date
+    counts = df['date'].value_counts().sort_index()
+    
+    plt.figure(figsize=(10,6))
+    counts.plot(kind='bar')
+    plt.xlabel('Дата')
+    plt.ylabel('Количество точек')
+    plt.title('Распределение точек по датам')
+    plt.tight_layout()
+    plt.savefig(output_image)
+    plt.close()
+    
+    print(f"График сохранен в {output_image}")
+
+def create_coordinate_scatter(df, output_image=OUTPUT_PLOT):
+    if df.empty:
+        print("Нет данных для построения графика.")
+        return
+    
+    plt.figure(figsize=(8,6))
+    plt.scatter(df['longitude'], df['latitude'], c='blue', alpha=0.5)
+    plt.xlabel('Долгота')
+    plt.ylabel('Широта')
+    plt.title('Распределение точек по координатам')
+    plt.grid(True)
+    plt.tight_layout()
+    plt.savefig(output_image)
+    plt.close()
+    
+    print(f"График координат сохранен в {output_image}")
+
+def main():
+    parser = argparse.ArgumentParser(description="Автоматизация работы с геоданными.")
+    
+    parser.add_argument("--csv", type=str, default=DEFAULT_CSV_FILE,
+                        help="Путь к CSV файлу.")
+                        
+    parser.add_argument("--db", type=str, default=DEFAULT_DB_FILE,
+                        help="Путь к базе данных SQLite.")
+                        
+    parser.add_argument("--filter", type=str,
+                        help="SQL условие для фильтрации данных (например 'latitude > 30').")
+                        
+    parser.add_argument("--map", action='store_true',
+                        help="Создать карту по выбранным данным.")
+                        
+    parser.add_argument("--plot", choices=['time', 'coordinates'], default=None,
+                        help="Создать график: 'time' — по дате/времени; 'coordinates' — по координатам.")
+    
+    args = parser.parse_args()
+
+    ensure_csv_exists(args.csv)
+
+    data = load_data(args.csv)
+
+    save_to_db(data.copy(), args.db)
+
+    if args.filter:
+        query_str = f"SELECT * FROM geolocations WHERE {args.filter}"
+        print(f"Выполняется фильтрация по условию:\n{query_str}")
+        filtered_df = query_db(args.db, query_str)
+        data_filtered_for_plot = filtered_df.copy()
+
+        display_df = filtered_df
+        print("Отфильтрованные данные:")
+        print(display_df.head())
+        
+        if args.map:
+            create_map(display_df)
+        
+        if args.plot == 'time':
+            create_time_distribution_plot(data_filtered_for_plot)
+        elif args.plot == 'coordinates':
+            create_coordinate_scatter(data_filtered_for_plot)
+
+        
+        
+        
+
+if __name__ == "__main__":
+    main()

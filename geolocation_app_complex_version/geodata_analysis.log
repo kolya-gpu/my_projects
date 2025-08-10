@@ -1,0 +1,119 @@
+2025-08-10 17:44:51,371 - INFO - Starting advanced geodata analysis...
+2025-08-10 17:44:51,372 - INFO - geodata.csv создан автоматически.
+2025-08-10 17:44:51,372 - INFO - Loading data from geodata.csv
+2025-08-10 17:44:51,377 - INFO - Starting data validation and cleaning...
+2025-08-10 17:44:51,384 - INFO - Removed 0 duplicate rows
+2025-08-10 17:44:51,385 - INFO - Removed 0 rows with invalid coordinates
+2025-08-10 17:44:51,413 - INFO - Removed 0 rows with invalid timestamps
+2025-08-10 17:47:34,679 - INFO - Starting advanced geodata analysis...
+2025-08-10 17:47:34,679 - INFO - Loading data from geodata.csv
+2025-08-10 17:47:34,681 - INFO - Starting data validation and cleaning...
+2025-08-10 17:47:34,682 - INFO - Removed 0 duplicate rows
+2025-08-10 17:47:34,683 - INFO - Removed 0 rows with invalid coordinates
+2025-08-10 17:47:34,710 - INFO - Removed 0 rows with invalid timestamps
+2025-08-10 17:49:35,969 - INFO - Starting advanced geodata analysis...
+2025-08-10 17:49:35,969 - INFO - Loading data from geodata.csv
+2025-08-10 17:49:35,971 - INFO - Starting data validation and cleaning...
+2025-08-10 17:49:35,972 - INFO - Removed 0 duplicate rows
+2025-08-10 17:49:35,973 - INFO - Removed 0 rows with invalid coordinates
+2025-08-10 17:49:35,998 - INFO - Removed 0 rows with invalid timestamps
+2025-08-10 17:54:03,971 - INFO - Starting advanced geodata analysis...
+2025-08-10 17:54:03,971 - INFO - Loading data from geodata.csv
+2025-08-10 17:54:03,973 - INFO - Starting data validation and cleaning...
+2025-08-10 17:54:03,974 - INFO - Removed 0 duplicate rows
+2025-08-10 17:54:03,975 - INFO - Removed 0 rows with invalid coordinates
+2025-08-10 17:54:04,001 - INFO - Removed 0 rows with invalid timestamps
+2025-08-10 17:58:14,734 - INFO - Starting advanced geodata analysis...
+2025-08-10 17:58:14,734 - INFO - Loading data from geodata.csv
+2025-08-10 17:58:14,736 - INFO - Starting data validation and cleaning...
+2025-08-10 17:58:14,737 - INFO - Removed 0 duplicate rows
+2025-08-10 17:58:14,739 - INFO - Removed 0 rows with invalid coordinates
+2025-08-10 17:58:14,767 - INFO - Removed 0 rows with invalid timestamps
+2025-08-10 17:58:14,771 - INFO - Data cleaning completed. Final dataset: 120 rows
+2025-08-10 17:58:14,834 - INFO - Enhancing data with location information...
+2025-08-10 17:59:03,544 - INFO - Data enhancement completed
+2025-08-10 17:59:03,545 - INFO - Loaded 120 data points
+2025-08-10 17:59:04,759 - INFO - Data saved to database: geolocations.db
+2025-08-10 17:59:04,759 - INFO - Analysis completed successfully!
+2025-08-10 17:59:04,759 - INFO - Total data points processed: 120
+2025-08-10 17:59:59,656 - INFO - Starting advanced geodata analysis...
+2025-08-10 17:59:59,656 - INFO - Loading data from geodata.csv
+2025-08-10 17:59:59,658 - INFO - Starting data validation and cleaning...
+2025-08-10 17:59:59,659 - INFO - Removed 0 duplicate rows
+2025-08-10 17:59:59,660 - INFO - Removed 0 rows with invalid coordinates
+2025-08-10 17:59:59,686 - INFO - Removed 0 rows with invalid timestamps
+2025-08-10 17:59:59,689 - INFO - Data cleaning completed. Final dataset: 120 rows
+2025-08-10 17:59:59,753 - INFO - Enhancing data with location information...
+2025-08-10 18:00:48,012 - INFO - Data enhancement completed
+2025-08-10 18:00:48,014 - INFO - Loaded 120 data points
+2025-08-10 18:00:49,328 - INFO - Data saved to database: geolocations.db
+2025-08-10 18:00:49,328 - INFO - Creating map visualization...
+2025-08-10 18:00:49,329 - INFO - Creating enhanced map...
+2025-08-10 18:00:49,471 - INFO - Enhanced map saved to map.html
+2025-08-10 18:00:49,472 - INFO - Standard map saved to map.html
+2025-08-10 18:00:49,472 - INFO - Analysis completed successfully!
+2025-08-10 18:00:49,472 - INFO - Total data points processed: 120
+2025-08-10 18:02:49,926 - INFO - Starting advanced geodata analysis...
+2025-08-10 18:02:49,927 - INFO - Loading data from geodata.csv
+2025-08-10 18:02:49,929 - INFO - Starting data validation and cleaning...
+2025-08-10 18:02:49,930 - INFO - Removed 0 duplicate rows
+2025-08-10 18:02:49,931 - INFO - Removed 0 rows with invalid coordinates
+2025-08-10 18:02:49,957 - INFO - Removed 0 rows with invalid timestamps
+2025-08-10 18:02:49,960 - INFO - Data cleaning completed. Final dataset: 120 rows
+2025-08-10 18:02:50,024 - INFO - Enhancing data with location information...
+2025-08-10 18:03:39,382 - INFO - Data enhancement completed
+2025-08-10 18:03:39,383 - INFO - Loaded 120 data points
+2025-08-10 18:03:40,619 - INFO - Data saved to database: geolocations.db
+2025-08-10 18:03:40,620 - INFO - Creating advanced visualizations...
+2025-08-10 18:03:40,620 - INFO - Creating advanced visualizations...
+2025-08-10 18:03:40,620 - INFO - Creating interactive heatmap...
+2025-08-10 18:03:40,681 - INFO - Interactive heatmap saved to geodata_heatmap.html
+2025-08-10 18:03:40,682 - INFO - Creating timeline visualization...
+2025-08-10 18:03:40,712 - INFO - Timeline visualization saved to geodata_timeline.html
+2025-08-10 18:03:40,712 - INFO - Creating 3D map...
+2025-08-10 18:03:40,747 - INFO - 3D map saved to 3d_geodata_map.html
+2025-08-10 18:03:40,747 - INFO - Creating network graph...
+2025-08-10 18:03:42,416 - ERROR - Error creating advanced visualizations: Invalid property specified for object of type plotly.graph_objs.scatter.Line: 'opacity'
+
+Did you mean "backoff"?
+
+    Valid properties:
+        backoff
+            Sets the line back off from the end point of the nth
+            line segment (in px). This option is useful e.g. to
+            avoid overlap with arrowhead markers. With "auto" the
+            lines would trim before markers if `marker.angleref` is
+            set to "previous".
+        backoffsrc
+            Sets the source reference on Chart Studio Cloud for
+            `backoff`.
+        color
+            Sets the line color.
+        dash
+            Sets the dash style of lines. Set to a dash type string
+            ("solid", "dot", "dash", "longdash", "dashdot", or
+            "longdashdot") or a dash length list in px (eg
+            "5px,10px,2px,2px").
+        shape
+            Determines the line shape. With "spline" the lines are
+            drawn using spline interpolation. The other available
+            values correspond to step-wise line shapes.
+        simplify
+            Simplifies lines by removing nearly-collinear points.
+            When transitioning lines, it may be desirable to
+            disable this so that the number of points along the
+            resulting SVG path is unaffected.
+        smoothing
+            Has an effect only if `shape` is set to "spline" Sets
+            the amount of smoothing. 0 corresponds to no smoothing
+            (equivalent to a "linear" shape).
+        width
+            Sets the line width (in px).
+        
+Did you mean "backoff"?
+
+Bad property path:
+opacity
+^^^^^^^
+2025-08-10 18:03:42,417 - INFO - Analysis completed successfully!
+2025-08-10 18:03:42,417 - INFO - Total data points processed: 120
